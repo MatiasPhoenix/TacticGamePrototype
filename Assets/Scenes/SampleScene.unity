@@ -1233,6 +1233,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511695662}
   m_CullTransparentMesh: 1
+--- !u!1 &1662987926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1662987928}
+  - component: {fileID: 1662987927}
+  - component: {fileID: 1662987929}
+  m_Layer: 0
+  m_Name: BattleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1662987927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662987926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 333a92c16a97afb40afec60269c860ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1662987928
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662987926}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 582.9277, y: 1163.7068, z: 6.772327}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1662987929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662987926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c837635abc4773040a71d9a4781ca6d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1683578360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,8 +1583,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableGrid: {fileID: 11400000, guid: f17361ff6af792b4d989ad473d7f8e04, type: 2}
   _drawConnections: 0
-  _gridWidth: 10
-  _gridHeight: 8
+  _gridWidth: 14
+  _gridHeight: 10
 --- !u!4 &1786636571
 Transform:
   m_ObjectHideFlags: 0
@@ -1785,6 +1842,7 @@ SceneRoots:
   - {fileID: 1484800838}
   - {fileID: 562209460}
   - {fileID: 990871509}
+  - {fileID: 1662987928}
   - {fileID: 394386680078768726}
   - {fileID: 1733727647}
   - {fileID: 1549341002435132541}

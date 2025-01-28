@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour
     void Awake() => Instance = this;
 
     void Start()
-    { 
+    {
         SetListOfUnits();
     }
 
@@ -74,16 +74,16 @@ public class SpawnManager : MonoBehaviour
             {
                 for (int i = 0; i < _HeroUnits.Count; i++)
                 {
+                    GridManager.Instance.UpdateTiles();
+
                     NodeBase playerNodeBase = GridManager.Instance.TileForTeams();
                     Instantiate(_HeroUnits[i], playerNodeBase.Coords.Pos, _HeroUnits[i].transform.rotation);
-                    // _HeroUnits[i].RestartAllStats();  
                 }
             }
             else
             {
                 NodeBase playerNodeBase = GridManager.Instance.TileForTeams();
-                Instantiate(_HeroUnits[0], playerNodeBase.Coords.Pos, _HeroUnits[0].transform.rotation);
-                // _HeroUnits[0].RestartAllStats();   
+                Instantiate(_HeroUnits[0], playerNodeBase.Coords.Pos, _HeroUnits[0].transform.rotation);  
             }
         }
 
@@ -91,10 +91,11 @@ public class SpawnManager : MonoBehaviour
         {
             for (int i = 0; i < _EnemyUnits.Count; i++)
             {
+                GridManager.Instance.UpdateTiles();
+
                 NodeBase enemyNodeBase = GridManager.Instance.TileForTeams();
                 Instantiate(_EnemyUnits[i], enemyNodeBase.Coords.Pos, _EnemyUnits[i].transform.rotation);
-                enemyNodeBase.TileOccupiedByEnemy();
-                // _EnemyUnits[i].RestartAllStats();
+                GridManager.Instance.UpdateTiles();
             }
         }
     }

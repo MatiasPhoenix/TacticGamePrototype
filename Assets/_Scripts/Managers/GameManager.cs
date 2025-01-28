@@ -51,9 +51,11 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.PlayerTurn:
                 Debug.Log("--------------------PLAYER TURN!--------------------");
+                GridManager.Instance.UpdateTiles();
                 break;
             case GameState.EnemyTurn:
                 Debug.Log("--------------------ENEMY TURN!--------------------");
+                GridManager.Instance.UpdateTiles();
                 EnemyManager.Instance.BeginEnemyTurns();
                 break;
 

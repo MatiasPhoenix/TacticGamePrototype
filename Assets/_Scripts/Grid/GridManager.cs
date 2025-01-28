@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Tiles;
-using NUnit.Framework;
 using Tarodev_Pathfinding._Scripts.Grid.Scriptables;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -58,18 +57,20 @@ namespace Tarodev_Pathfinding._Scripts.Grid
             myGridMap.ChangeMapDimensions(_gridWidth, _gridHeight);
         }
 
-        
+
         public NodeBase TileForTeams()
         {
             if (GameManager.Instance.GameState == GameState.PlayerSpawn)
             {
                 NodeBase nodeForHero = Tiles.Where(t => t.Key.x < _gridWidth / 4 && t.Value.Walkable).OrderBy(t => Random.value).First().Value;
                 return nodeForHero;
-            } else if (GameManager.Instance.GameState == GameState.EnemySpawn)
+            }
+            else if (GameManager.Instance.GameState == GameState.EnemySpawn)
             {
                 NodeBase nodeForEnemy = Tiles.Where(t => t.Key.x > _gridWidth / 2 && t.Value.Walkable).OrderBy(t => Random.value).First().Value;
                 return nodeForEnemy;
-            }else
+            }
+            else
             {
                 return null;
             }
@@ -98,7 +99,62 @@ namespace Tarodev_Pathfinding._Scripts.Grid
 
         public bool UnitSelect()
         {
-            return _playerNodeBase!= null;
+            return _playerNodeBase != null;
+        }
+
+        public void UpdateTiles()
+        {
+            foreach (var tile in Tiles)
+            {
+                TileOccupiedByUnits(tile.Value);
+
+                if (GameManager.Instance.GameState == GameState.PlayerTurn)
+                    if (tile.Value.OccupateByUnit || tile.Value.OccupateByEnemy)
+                        tile.Value.Walkable = false;
+
+                if (GameManager.Instance.GameState == GameState.EnemyTurn)
+                {
+                    if (tile.Value.OccupateByEnemy)
+                        tile.Value.Walkable = false;
+                    if (tile.Value.OccupateByUnit)
+                        tile.Value.Walkable = true;
+                }
+
+                if (!tile.Value.OccupateByUnit && !tile.Value.OccupateByEnemy && !tile.Value.MountainOrObstacle)
+                    tile.Value.Walkable = true;
+            }
+        }
+
+        public void TileOccupiedByUnits(NodeBase node)
+        {
+            HeroUnit[] allHeroes = FindObjectsByType<HeroUnit>(FindObjectsSortMode.None);
+            EnemyUnit[] allEnemies = FindObjectsByType<EnemyUnit>(FindObjectsSortMode.None);
+
+            // Reset prima di controllare
+            node.ThisHero = null;
+            node.ThisEnemy = null;
+            node.OccupateByUnit = false;
+            node.OccupateByEnemy = false;
+
+            foreach (HeroUnit hero in allHeroes)
+            {
+                if (hero.transform.position == node.transform.position)
+                {
+                    node.ThisHero = hero;
+                    node.OccupateByUnit = true;
+                    break;  // Se un'unità è già trovata, esce dal ciclo
+                }
+            }
+
+            foreach (EnemyUnit enemy in allEnemies)
+            {
+                if (enemy.transform.position == node.transform.position)
+                {
+                    node.ThisEnemy = enemy;
+                    node.OccupateByEnemy = true;
+                    break;  // Stessa logica per i nemici
+                }
+            }
         }
     }
 }

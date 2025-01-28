@@ -37,8 +37,8 @@ namespace Tarodev_Pathfinding._Scripts
                     var count = 100;
                     while (currentPathTile != startNode)
                     {
-                        
-                        path.Add(currentPathTile);
+                        if (currentPathTile.OccupateByUnit == false || currentPathTile.OccupateByEnemy == false) path.Add(currentPathTile);
+                        else return null;
                                                  
                         currentPathTile = currentPathTile.Connection;
                         count--;

@@ -9,7 +9,6 @@ using UnityEngine;
 public class MouseManager : MonoBehaviour
 {
     public static MouseManager Instance;
-
     public HeroUnit HeroUnit;
     private NodeBase _workingNode;
     public bool unitMoving = false;

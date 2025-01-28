@@ -42,12 +42,10 @@ public class EnemyManager : MonoBehaviour
     public IEnumerator TargetHeroToCombat(EnemyUnit enemy)
     {
         Dictionary<HeroUnit, List<NodeBase>> paths = new Dictionary<HeroUnit, List<NodeBase>>();
-
         foreach (HeroUnit hero in _heroTargetUnits)
         {
             NodeBase enemyLocation = GridManager.Instance.GetTileAtPosition(enemy.transform.position);
             NodeBase heroLocation = GridManager.Instance.GetTileAtPosition(hero.transform.position);
-
             var path = Pathfinding.FindPath(enemyLocation, heroLocation);
             if (path != null)
                 paths.Add(hero, path);
@@ -73,6 +71,7 @@ public class EnemyManager : MonoBehaviour
 
     public IEnumerator GoToTarget(EnemyUnit currentEnemy)
     {
+
         AnimationManager.Instance.PlayWalkAnimation(currentEnemy, true);
         unitMoving = true;
 
@@ -84,10 +83,10 @@ public class EnemyManager : MonoBehaviour
         if (path == null)
         {
             Debug.Log($"Nemico {currentEnemy.FactionAndName()} non può raggiungere il bersaglio.");
+            GridManager.Instance.UpdateTiles();
             unitMoving = false;
             yield break;
         }
-
         path.Reverse();
         targetNode.RevertTile();
         foreach (var tile in path)
@@ -98,7 +97,7 @@ public class EnemyManager : MonoBehaviour
                 
                 AnimationManager.Instance.PlayWalkAnimation(currentEnemy, false);
                 StartCoroutine(BattleManager.Instance.StartBattle(currentEnemy, _heroTarget));
-
+                GridManager.Instance.UpdateTiles();
                 unitMoving = false;
                 yield break;
             }
@@ -110,6 +109,7 @@ public class EnemyManager : MonoBehaviour
 
         AnimationManager.Instance.PlayWalkAnimation(currentEnemy, false);
         Debug.Log($"{currentEnemy.FactionAndName()} ha terminato il movimento.");
+        GridManager.Instance.UpdateTiles();
         unitMoving = false;
     }
 

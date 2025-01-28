@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Tarodev_Pathfinding._Scripts;
 using Tarodev_Pathfinding._Scripts.Grid;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -27,7 +25,8 @@ namespace _Scripts.Tiles
         public EnemyUnit ThisEnemy;
         public ICoords Coords;
         public float GetDistance(NodeBase other) => Coords.GetDistance(other.Coords); // Helper to reduce noise in pathfinding
-        public bool Walkable { get; private set; }
+        public bool Walkable;
+        public bool MountainOrObstacle;
         private bool _selected;
         private Color _defaultColor;
 
@@ -35,6 +34,8 @@ namespace _Scripts.Tiles
         public virtual void Init(bool walkable, ICoords coords)
         {
             Walkable = walkable;
+            if (!Walkable)
+                MountainOrObstacle = true;
 
             _renderer.color = walkable ? _walkableColor.Evaluate(Random.Range(0f, 1f)) : _obstacleColor;
             _defaultColor = _renderer.color;
@@ -69,7 +70,7 @@ namespace _Scripts.Tiles
                         MouseManager.Instance.MethodToMoveUnit();
                         return;
                     }
-                    else if (Pathfinding.TileCount == 0 || Pathfinding.TileCount == 1 )
+                    else if (Pathfinding.TileCount == 0 || Pathfinding.TileCount == 1)
                     {
                         Debug.Log($"Unità deselezionata");
                         GridManager.Instance.UnitDeselected();
@@ -86,7 +87,7 @@ namespace _Scripts.Tiles
                     }
                 }
 
-                TileOccupied();
+                GridManager.Instance.UpdateTiles();
                 if (OccupateByUnit)
                 {
                     if (!GridManager.Instance.UnitSelect())
@@ -99,43 +100,12 @@ namespace _Scripts.Tiles
             if (!OccupateByUnit)
             {
                 if (OccupateByEnemy)
-                    Debug.Log($"Qui c'è un ENEMY, {ThisEnemy.FactionAndName()} -> {Coords.Pos}");
+                    Debug.Log($"Qui c'è un ENEMY, {ThisEnemy.FactionAndName()} -> {Coords.Pos}, walkable -> {Walkable} e mountain -> {MountainOrObstacle}");
                 else
-                    Debug.Log($"Qui c'è un TILE VUOTO, {Coords.Pos}");
+                    Debug.Log($"Qui c'è un TILE VUOTO, {Coords.Pos}, walkable -> {Walkable} e mountain -> {MountainOrObstacle}");
             }
         }
 
-        public void TileOccupied()
-        {
-            HeroUnit[] allHeroes = FindObjectsByType<HeroUnit>(FindObjectsSortMode.None);
-
-            foreach (HeroUnit hero in allHeroes)
-            {
-                if (hero.transform.position == transform.position)
-                {
-                    ThisHero = hero;
-                    OccupateByUnit = true;
-                    return;
-                }
-                else OccupateByUnit = false;
-            }
-        }
-
-        public void TileOccupiedByEnemy()
-        {
-            EnemyUnit[] allEnemies = FindObjectsByType<EnemyUnit>(FindObjectsSortMode.None);
-
-            foreach (EnemyUnit enemy in allEnemies)
-            {
-                if (enemy.transform.position == transform.position)
-                {
-                    ThisEnemy = enemy;
-                    OccupateByEnemy = true;
-                    return;
-                }
-                else OccupateByEnemy = false;
-            }
-        }
 
         public void VisualizeFloodFill()
         {
