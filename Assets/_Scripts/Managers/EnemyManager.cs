@@ -73,6 +73,7 @@ public class EnemyManager : MonoBehaviour
 
     public IEnumerator GoToTarget(EnemyUnit currentEnemy)
     {
+        AnimationManager.Instance.PlayWalkAnimation(currentEnemy, true);
         unitMoving = true;
 
         NodeBase targetNode = GridManager.Instance.GetTileAtPosition(_heroTarget.transform.position);
@@ -94,6 +95,10 @@ public class EnemyManager : MonoBehaviour
             if (Vector2.Distance(currentEnemy.transform.position, _heroTarget.transform.position) <= 1)
             {
                 Debug.Log($"{currentEnemy.FactionAndName()} ha raggiunto il bersaglio.");
+                
+                AnimationManager.Instance.PlayWalkAnimation(currentEnemy, false);
+                StartCoroutine(BattleManager.Instance.StartBattle(currentEnemy, _heroTarget));
+
                 unitMoving = false;
                 yield break;
             }
@@ -103,6 +108,7 @@ public class EnemyManager : MonoBehaviour
             tile.RevertTile();
         }
 
+        AnimationManager.Instance.PlayWalkAnimation(currentEnemy, false);
         Debug.Log($"{currentEnemy.FactionAndName()} ha terminato il movimento.");
         unitMoving = false;
     }
