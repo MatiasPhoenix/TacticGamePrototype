@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using _Scripts.Tiles;
 using Tarodev_Pathfinding._Scripts.Grid;
 using UnityEngine;
@@ -97,6 +98,15 @@ public class SpawnManager : MonoBehaviour
                 Instantiate(_EnemyUnits[i], enemyNodeBase.Coords.Pos, _EnemyUnits[i].transform.rotation);
                 GridManager.Instance.UpdateTiles();
             }
+        }
+    }
+
+    public void ResetMovementOfHeroes()
+    {
+        List<HeroUnit> allHeroes = FindObjectsByType<HeroUnit>(FindObjectsSortMode.None).ToList();
+        foreach (var hero in allHeroes)
+        {
+            hero.RestartMovement();
         }
     }
 

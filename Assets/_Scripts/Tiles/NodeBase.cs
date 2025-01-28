@@ -55,13 +55,32 @@ namespace _Scripts.Tiles
         {
             if (MouseManager.Instance.HeroUnit != null && TileForFloodFill.activeSelf)
                 OnHoverTile?.Invoke(this);
+
+            if (MouseManager.Instance.attackPhase == true && TileForFloodFill.activeSelf && OccupateByEnemy)
+                Debug.Log($"Qui c'è un ENEMY, {ThisEnemy.FactionAndName()} -> {Coords.Pos}, walkable -> {Walkable} e mountain -> {MountainOrObstacle}");
         }
 
         protected void OnMouseDown()
         {
+
+            if (MouseManager.Instance.attackPhase == true)
+            {
+                if (OccupateByEnemy && TileForFloodFill.activeSelf)
+                {
+                    StartCoroutine(BattleManager.Instance.StartBattle(MouseManager.Instance.HeroUnit, ThisEnemy));
+                    return;
+                }
+                else
+                {
+                    UnitDeselectedInNodeBase();
+                    return;
+                }
+            }
+
+            MouseManager.Instance.attackPhase = false;
+
             if (GameManager.Instance.GameState == GameState.PlayerTurn)
             {
-
                 if (MouseManager.Instance.HeroUnit != null)
                 {
                     if (TileForFloodFill.activeSelf)
@@ -72,11 +91,7 @@ namespace _Scripts.Tiles
                     }
                     else if (Pathfinding.TileCount == 0 || Pathfinding.TileCount == 1)
                     {
-                        Debug.Log($"Unità deselezionata");
-                        GridManager.Instance.UnitDeselected();
-                        MouseManager.Instance.CancelSelectedUnit();
-                        CanvasManager.Instance.SetActiveHeroPanel();
-                        AreaMovementAndAttack.ResetFloodFill();
+                        UnitDeselectedInNodeBase();
                         return;
                     }
                     else if (!TileForFloodFill.activeSelf)
@@ -115,6 +130,15 @@ namespace _Scripts.Tiles
         public void HideFloodFill()
         {
             TileForFloodFill.SetActive(false);
+        }
+        public void UnitDeselectedInNodeBase()
+        {
+            Debug.Log($"Unità deselezionata");
+            MouseManager.Instance.attackPhase = false;
+            GridManager.Instance.UnitDeselected();
+            MouseManager.Instance.CancelSelectedUnit();
+            CanvasManager.Instance.SetActiveHeroPanel();
+            AreaMovementAndAttack.ResetFloodFill();
         }
 
 

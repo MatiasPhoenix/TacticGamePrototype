@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerTurn:
                 Debug.Log("--------------------PLAYER TURN!--------------------");
                 GridManager.Instance.UpdateTiles();
+                SpawnManager.Instance.ResetMovementOfHeroes();
                 break;
             case GameState.EnemyTurn:
                 Debug.Log("--------------------ENEMY TURN!--------------------");
@@ -65,6 +66,8 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+    public void EndTurn() => ChangeState(GameState.EnemyTurn);
 }
 
 

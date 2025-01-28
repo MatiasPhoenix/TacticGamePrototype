@@ -8,8 +8,10 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator StartBattle(BaseUnit attacker, BaseUnit target)
     {
+        Debug.Log($"{attacker.FactionAndName()} attacca {target.FactionAndName()}");
+
         AnimationManager.Instance.PlayAttackAnimation(attacker);
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.5f);
         AnimationManager.Instance.TakeDamageAnimation(target);   
     }
 

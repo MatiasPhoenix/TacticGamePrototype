@@ -12,7 +12,8 @@ public class MouseManager : MonoBehaviour
     public HeroUnit HeroUnit;
     private NodeBase _workingNode;
     public bool unitMoving = false;
-    
+    public bool attackPhase = false;
+
     private List<NodeBase> _path = new List<NodeBase>();
 
     private void Awake() => Instance = this;
@@ -23,10 +24,30 @@ public class MouseManager : MonoBehaviour
         _workingNode = node;
         SetHeroUnit(heroUnit);
         GridManager.Instance.UnitPresentInTile(node);
-    
-        AreaMovementAndAttack.FloodFill(node, HeroUnit.CurrentMovement());
-        CanvasManager.Instance.UpgradePanelHeroInfo(HeroUnit);
 
+        CanvasManager.Instance.UpgradePanelHeroInfo(HeroUnit);
+    }
+
+    public void ActiveFloodFill(string buttonAction)
+    {
+        AreaMovementAndAttack.ResetFloodFill();
+
+        switch (buttonAction)
+        {
+            case "Attack":
+                attackPhase = true;
+                AreaMovementAndAttack.FloodFill(_workingNode, HeroUnit.MaxAttack());
+                break;
+
+            case "Movement":
+                attackPhase = false;
+                AreaMovementAndAttack.FloodFill(_workingNode, HeroUnit.CurrentMovement());
+                break;
+
+            case "CancelSelection":
+                _workingNode.UnitDeselectedInNodeBase();
+                break;
+        }
     }
 
     public void SetHeroUnit(HeroUnit unit)
@@ -44,8 +65,8 @@ public class MouseManager : MonoBehaviour
 
     }
 
-    public void MethodToMoveUnit() => StartCoroutine(MoveHero()); 
-    
+    public void MethodToMoveUnit() => StartCoroutine(MoveHero());
+
     public IEnumerator MoveHero()
     {
         AreaMovementAndAttack.ResetFloodFill();
@@ -63,19 +84,16 @@ public class MouseManager : MonoBehaviour
         }
         HeroUnit = null;
         _workingNode = null;
-        Pathfinding.TileCount = 0;   
+        Pathfinding.TileCount = 0;
     }
     public void CancelSelectedUnit()
     {
         HeroUnit = null;
         _workingNode = null;
         Pathfinding.TileCount = 0;
-        foreach (var tile in _path)
-        {
-            tile.RevertTile();
-        }   
+        foreach (var tile in _path) tile.RevertTile();
     }
 
     public void TakePathToPathfinder(List<NodeBase> path) => _path = path;
-    
+
 }

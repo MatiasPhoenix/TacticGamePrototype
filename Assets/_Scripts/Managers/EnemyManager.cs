@@ -37,6 +37,8 @@ public class EnemyManager : MonoBehaviour
             StartCoroutine(TargetHeroToCombat(enemy));
             yield return new WaitUntil(() => !unitMoving);
         }
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.ChangeState(GameState.PlayerTurn);
     }
 
     public IEnumerator TargetHeroToCombat(EnemyUnit enemy)
@@ -98,6 +100,7 @@ public class EnemyManager : MonoBehaviour
                 AnimationManager.Instance.PlayWalkAnimation(currentEnemy, false);
                 StartCoroutine(BattleManager.Instance.StartBattle(currentEnemy, _heroTarget));
                 GridManager.Instance.UpdateTiles();
+                yield return new WaitForSeconds(0.8f);
                 unitMoving = false;
                 yield break;
             }

@@ -46,7 +46,7 @@ namespace Tarodev_Pathfinding._Scripts
 
                     }
 
-                    if (GameManager.Instance.GameState == GameState.PlayerTurn)
+                    if (GameManager.Instance.GameState == GameState.PlayerTurn && MouseManager.Instance.attackPhase == false)
                         foreach (var tile in path) tile.SetColor(PathColor);
                         
                     // startNode.SetColor(PathColor);

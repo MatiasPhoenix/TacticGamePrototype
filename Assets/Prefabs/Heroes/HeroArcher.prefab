@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3654855763452873356}
+  - component: {fileID: 3227943921343428522}
   - component: {fileID: 2735367058579328237}
   - component: {fileID: -5270318644942483730}
-  - component: {fileID: 3227943921343428522}
   m_Layer: 0
   m_Name: HeroArcher
   m_TagString: Untagged
@@ -35,36 +35,6 @@ Transform:
   - {fileID: 2221670969744204162}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &2735367058579328237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7885296371145878977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26262382e9ba8704189f77e45ea90e51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _faction: 3
-  _unitName: Dormiglione
-  _unitImage: {fileID: 7885296371145878977, guid: 7b13cc5d1633c5443a758f08e75c5e87, type: 3}
-  _maxHealth: 1
-  _maxMovement: 2
-  _maxAttack: 2
---- !u!114 &-5270318644942483730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7885296371145878977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64846292e39cb8343ab042cf2a5f7709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &3227943921343428522
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -111,6 +81,35 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5905299, y: 0.81952876}
   m_EdgeRadius: 0
+--- !u!114 &2735367058579328237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7885296371145878977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26262382e9ba8704189f77e45ea90e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _faction: 3
+  _unitName: Dormiglione
+  _maxHealth: 3
+  _maxMovement: 2
+  _maxAttack: 3
+--- !u!114 &-5270318644942483730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7885296371145878977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64846292e39cb8343ab042cf2a5f7709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &288627145282894357
 PrefabInstance:
   m_ObjectHideFlags: 0

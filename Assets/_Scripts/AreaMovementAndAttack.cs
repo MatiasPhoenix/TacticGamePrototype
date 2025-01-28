@@ -13,7 +13,7 @@ public static class AreaMovementAndAttack
         var filledNodes = new List<NodeBase>();
         var toFill = new Queue<NodeBase>();
 
-        startNode.SetG(0); 
+        startNode.SetG(0);
 
         toFill.Enqueue(startNode);
         filledNodes.Add(startNode);
@@ -24,16 +24,33 @@ public static class AreaMovementAndAttack
 
             foreach (var neighbor in current.Neighbors)
             {
-                if (!filledNodes.Contains(neighbor) && IsFillable(neighbor))
+                if (!MouseManager.Instance.attackPhase)
                 {
-                    int costToNeighbor = (int)current.G + 1;
-
-                    if (costToNeighbor <= moveRange)
+                    if (!filledNodes.Contains(neighbor) && IsFillable(neighbor))
                     {
-                        neighbor.SetG(costToNeighbor);
-                        neighbor.VisualizeFloodFill();
-                        toFill.Enqueue(neighbor);
-                        filledNodes.Add(neighbor);
+                        int costToNeighbor = (int)current.G + 1;
+
+                        if (costToNeighbor <= moveRange)
+                        {
+                            neighbor.SetG(costToNeighbor);
+                            neighbor.VisualizeFloodFill();
+                            toFill.Enqueue(neighbor);
+                            filledNodes.Add(neighbor);
+                        }
+                    }
+                }else
+                {
+                    if (!filledNodes.Contains(neighbor))
+                    {
+                        int costToNeighbor = (int)current.G + 1;
+
+                        if (costToNeighbor <= moveRange)
+                        {
+                            neighbor.SetG(costToNeighbor);
+                            neighbor.VisualizeFloodFill();
+                            toFill.Enqueue(neighbor);
+                            filledNodes.Add(neighbor);
+                        }
                     }
                 }
             }
@@ -45,7 +62,7 @@ public static class AreaMovementAndAttack
     }
 
     private static bool IsFillable(NodeBase node) => node.Walkable;
-    
+
     public static void ResetFloodFill()
     {
         foreach (var node in _tempNodes) node.HideFloodFill();

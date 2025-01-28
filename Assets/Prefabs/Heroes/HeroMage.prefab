@@ -95,10 +95,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _unitName: Maghetta
-  _unitImage: {fileID: 1362288665838128521, guid: 8de63b360fc0a514c8a4b01e3e5d5c02, type: 3}
   _maxHealth: 2
-  _maxMovement: 1
-  _maxAttack: 999
+  _maxMovement: 2
+  _maxAttack: 4
 --- !u!114 &6934258281977057659
 MonoBehaviour:
   m_ObjectHideFlags: 0
