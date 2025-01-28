@@ -1,0 +1,61 @@
+# Questo è un template per Unity.
+# Ignora i file temporanei, librerie e file auto-generati.
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+
+# Visual Studio/MonoDevelop cache
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+
+# Workspace di Rider
+.idea/
+*.idea/
+
+# File di sistema
+.DS_Store
+*.swp
+*.lock
+*.meta
+*.bak
+*.old
+*.orig
+*.save
+Thumbs.db
+
+# Asset bundles
+*.manifest
+
+# Crash e debug
+sysinfo.txt
+
+# Profilazione
+*.prof
+
+# Gradle
+.gradle/
+
+# Plugin Android auto-generati
+/Assets/Plugins/Android/*.gradle
+/Assets/Plugins/Android/**/*.meta
+
+# File del sistema operativo
+ehthumbs.db
+Desktop.ini
+
+# File specifici di Unity generati
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/
