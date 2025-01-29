@@ -69,8 +69,9 @@ public class MouseManager : MonoBehaviour
 
     public IEnumerator MoveHero()
     {
+        AnimationManager.Instance.PlayWalkAnimation(HeroUnit, true);
+
         AreaMovementAndAttack.ResetFloodFill();
-        GridManager.Instance.UnitDeselected();
         _workingNode.RevertTile();
         _path.Reverse();
         unitMoving = false;
@@ -81,9 +82,14 @@ public class MouseManager : MonoBehaviour
             HeroUnit.transform.position = pos;
             tile.RevertTile();
             HeroUnit.MovementModifier(false);
+            CanvasManager.Instance.UpgradePanelHeroInfo(HeroUnit);
         }
-        HeroUnit = null;
-        _workingNode = null;
+
+        AnimationManager.Instance.PlayWalkAnimation(HeroUnit, false);
+
+        // HeroUnit = null;
+        _workingNode = _path.Last();
+        _workingNode.SelectUnitPlusNode(_workingNode, HeroUnit);
         Pathfinding.TileCount = 0;
     }
     public void CancelSelectedUnit()
@@ -95,5 +101,6 @@ public class MouseManager : MonoBehaviour
     }
 
     public void TakePathToPathfinder(List<NodeBase> path) => _path = path;
+    public NodeBase GetWorkgingNode() => _workingNode;
 
 }

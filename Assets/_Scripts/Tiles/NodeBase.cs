@@ -29,6 +29,7 @@ namespace _Scripts.Tiles
         public bool MountainOrObstacle;
         private bool _selected;
         private Color _defaultColor;
+        private Color _defaultTileForFloodFillColor;
 
 
         public virtual void Init(bool walkable, ICoords coords)
@@ -39,6 +40,7 @@ namespace _Scripts.Tiles
 
             _renderer.color = walkable ? _walkableColor.Evaluate(Random.Range(0f, 1f)) : _obstacleColor;
             _defaultColor = _renderer.color;
+            _defaultTileForFloodFillColor = TileForFloodFill.GetComponent<SpriteRenderer>().color;
 
             OnHoverTile += OnOnHoverTile;
 
@@ -62,19 +64,10 @@ namespace _Scripts.Tiles
 
         protected void OnMouseDown()
         {
-
-            if (MouseManager.Instance.attackPhase == true)
+            if (MouseManager.Instance.attackPhase)
             {
-                if (OccupateByEnemy && TileForFloodFill.activeSelf)
-                {
-                    StartCoroutine(BattleManager.Instance.StartBattle(MouseManager.Instance.HeroUnit, ThisEnemy));
-                    return;
-                }
-                else
-                {
-                    UnitDeselectedInNodeBase();
-                    return;
-                }
+                HandleAttackPhase();
+                return;
             }
 
             MouseManager.Instance.attackPhase = false;
@@ -83,54 +76,102 @@ namespace _Scripts.Tiles
             {
                 if (MouseManager.Instance.HeroUnit != null)
                 {
-                    if (TileForFloodFill.activeSelf)
+                    if (OccupateByUnit)
                     {
-                        CanvasManager.Instance.SetActiveHeroPanel();
-                        MouseManager.Instance.MethodToMoveUnit();
+                        HandleUnitSelection();
                         return;
                     }
-                    else if (Pathfinding.TileCount == 0 || Pathfinding.TileCount == 1)
-                    {
-                        UnitDeselectedInNodeBase();
-                        return;
-                    }
-                    else if (!TileForFloodFill.activeSelf)
-                    {
-                        CanvasManager.Instance.ShowMessageInPanel("Not enough movement");
-                        Debug.Log($"Non puoi muovere piú di {MouseManager.Instance.HeroUnit.MaxMovement()}");
-                        return;
-                    }
-                }
 
-                GridManager.Instance.UpdateTiles();
-                if (OccupateByUnit)
+                    HandleUnitMovement();
+                }
+                else
                 {
-                    if (!GridManager.Instance.UnitSelect())
-                    {
-                        CanvasManager.Instance.SetActiveHeroPanel();
-                        MouseManager.Instance.MouseInteraction(this, ThisHero);
-                    }
+                    HandleUnitSelection();
                 }
             }
-            if (!OccupateByUnit)
+
+            HandleTileDebug();
+        }
+
+        private void HandleAttackPhase()
+        {
+            if (OccupateByEnemy && TileForFloodFill.activeSelf)
             {
-                if (OccupateByEnemy)
-                    Debug.Log($"Qui c'è un ENEMY, {ThisEnemy.FactionAndName()} -> {Coords.Pos}, walkable -> {Walkable} e mountain -> {MountainOrObstacle}");
-                else
-                    Debug.Log($"Qui c'è un TILE VUOTO, {Coords.Pos}, walkable -> {Walkable} e mountain -> {MountainOrObstacle}");
+                StartCoroutine(BattleManager.Instance.StartBattle(MouseManager.Instance.HeroUnit, ThisEnemy));
+            }
+            else
+            {
+                UnitDeselectedInNodeBase();
             }
         }
+
+        private void HandleUnitMovement()
+        {
+            if (TileForFloodFill.activeSelf)
+            {
+                MouseManager.Instance.MethodToMoveUnit();
+            }
+            else
+            {
+                Debug.Log($"Non puoi muovere più di {MouseManager.Instance.HeroUnit.MaxMovement()}");
+                UnitDeselectedInNodeBase();
+            }
+        }
+
+        private void HandleUnitSelection()
+        {
+            GridManager.Instance.UpdateTiles();
+
+            if (OccupateByUnit)
+            {
+                // Se c'è già un'unità selezionata, la deselezioniamo prima di selezionarne una nuova
+                if (MouseManager.Instance.HeroUnit != null)
+                {
+                    UnitDeselectedInNodeBase();
+                }
+
+                // Selezioniamo la nuova unità
+                MouseManager.Instance.HeroUnit = ThisHero;
+                CanvasManager.Instance.SetActiveHeroPanel();
+                SelectUnitPlusNode(this, ThisHero);
+                return;
+            }
+
+            // Debug nemico
+            if (OccupateByEnemy)
+            {
+                Debug.Log($"Nemico trovato: {ThisEnemy.FactionAndName()} -> {Coords.Pos}, walkable -> {Walkable}, ostacolo -> {MountainOrObstacle}");
+            }
+        }
+
+
+        private void HandleTileDebug()
+        {
+            if (!OccupateByUnit && !OccupateByEnemy)
+            {
+                Debug.Log($"TILE VUOTO -> {Coords.Pos}, walkable -> {Walkable}, ostacolo -> {MountainOrObstacle}");
+            }
+        }
+
 
 
         public void VisualizeFloodFill()
         {
             TileForFloodFill.SetActive(true);
+            if (MouseManager.Instance.attackPhase == true)
+            {
+                SpriteRenderer spriteRenderer = TileForFloodFill.GetComponent<SpriteRenderer>();
+                Color newColor = Color.red;
+                newColor.a = 0.2f;
+                spriteRenderer.color = newColor;
+            }
         }
-
         public void HideFloodFill()
         {
+            TileForFloodFill.GetComponent<SpriteRenderer>().color = _defaultTileForFloodFillColor;
             TileForFloodFill.SetActive(false);
         }
+
         public void UnitDeselectedInNodeBase()
         {
             Debug.Log($"Unità deselezionata");
@@ -139,6 +180,11 @@ namespace _Scripts.Tiles
             MouseManager.Instance.CancelSelectedUnit();
             CanvasManager.Instance.SetActiveHeroPanel();
             AreaMovementAndAttack.ResetFloodFill();
+        }
+
+        public void SelectUnitPlusNode(NodeBase baseNode, HeroUnit unit)
+        {
+            MouseManager.Instance.MouseInteraction(baseNode, unit);
         }
 
 
@@ -193,6 +239,7 @@ namespace _Scripts.Tiles
         }
 
         #endregion
+
     }
 
 

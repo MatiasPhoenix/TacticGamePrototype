@@ -32,6 +32,8 @@ public class CanvasManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)) ActionButton("Movement");
         if (Input.GetKeyDown(KeyCode.Alpha2)) ActionButton("Attack");
         if (Input.GetKeyDown(KeyCode.Escape)) ActionButton("CancelSelection");
+
+        
     }
     public void SetActiveHeroPanel() => _heroPanel.gameObject.SetActive(!_heroPanel.gameObject.activeSelf);
 
