@@ -4,8 +4,8 @@ public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager Instance;
     private void Awake() => Instance = this;
-        
-  
+
+
     public void PlayWalkAnimation(BaseUnit unit, bool isRunning)
     {
         Animator anim = FindAnimatorComponent(unit);
@@ -16,10 +16,20 @@ public class AnimationManager : MonoBehaviour
         Animator anim = FindAnimatorComponent(unit);
         if (anim != null) anim.SetTrigger("2_Attack");
     }
-      public void TakeDamageAnimation(BaseUnit unit)
-    {        
+    public void TakeDamageAnimation(BaseUnit unit)
+    {
         Animator anim = FindAnimatorComponent(unit);
         if (anim != null) anim.SetTrigger("3_Damaged");
+    }
+    public void DeadAnimation(BaseUnit unit)
+    {
+        Animator anim = FindAnimatorComponent(unit);
+        if (anim != null) anim.SetTrigger("4_Death");
+    }
+    public void CharacterIsDead(BaseUnit unit)
+    {
+        Animator anim = FindAnimatorComponent(unit);
+        if (anim != null) anim.SetBool("IsDeath", true);
     }
 
     Animator FindAnimatorComponent(BaseUnit unit)

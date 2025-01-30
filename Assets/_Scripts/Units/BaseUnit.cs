@@ -14,13 +14,9 @@ public class BaseUnit : MonoBehaviour
     protected int _currentMovement;
     [SerializeField] protected int _maxAttack;
     protected int _currentAttack;
+    protected bool _isDead = false;
 
-    // protected NodeBase _baseNodeCurrentPosition;
-    // protected NodeBase _baseNodeNewPosition;
-    private void Awake()
-    {
-        RestartAllStats();
-    }
+    private void Awake() => RestartAllStats();
 
     public string FactionAndName() => _unitName;
 
@@ -40,32 +36,13 @@ public class BaseUnit : MonoBehaviour
     public int MaxAttack() => _maxAttack;
     public void RestartAttack() => _currentAttack = _maxAttack;
 
+    //------Death hero
+    public bool IsDead() => _isDead;
     public void RestartAllStats()
     {
         RestartHealth();
         RestartMovement();
         RestartAttack();
     }
-    // public void SetBaseNodeCurrentPosition(NodeBase node)
-    // {
-    //     _baseNodeCurrentPosition = node;
-    // }
-    // public void SetBaseNodeNewPosition(NodeBase node)
-    // {
-    //     _baseNodeNewPosition = node;
-    // }
-    // public NodeBase GetBaseNodePosition(int position)
-    // {
-    //     if (position == 1)
-    //     return _baseNodeCurrentPosition;
-
-    //     if (position == 2)
-    //     return _baseNodeNewPosition;
-
-    //     return null;
-    // }
-    // public void PositionUpdate()
-    // {
-    //     _baseNodeCurrentPosition = _baseNodeNewPosition;
-    // }
+    
 }

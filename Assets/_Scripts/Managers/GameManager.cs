@@ -31,37 +31,40 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MenuOptions:
-                Debug.Log("Menu Options");
+                Debug.Log("---Menu Options");
                 break;
             case GameState.GameStart:
-                Debug.Log("Inizia GeneratedGrid!");
+                Debug.Log("---Inizia GeneratedGrid!");
                 GridManager.Instance.GeneratedGrid();
                 GridManager.Instance.CreateMapGame();
                 break;
             case GameState.PlayerSpawn:
-                Debug.Log("Inizia SpawnHeroes!");
+                Debug.Log("---Inizia SpawnHeroes!");
                 GridManager.Instance.SpawnUnitsForGame();
+                EnemyManager.Instance.PopulateUnitLists();
                 ChangeState(GameState.EnemySpawn);
                 break;
             case GameState.EnemySpawn:
-                Debug.Log("Inizia SpawnEnemies!");
+                Debug.Log("---Inizia SpawnEnemies!");
                 GridManager.Instance.SpawnUnitsForGame();
                 EnemyManager.Instance.PopulateUnitLists();
                 ChangeState(GameState.PlayerTurn);
                 break;
             case GameState.PlayerTurn:
                 Debug.Log("--------------------PLAYER TURN!--------------------");
+                EnemyManager.Instance.PopulateUnitLists();
                 GridManager.Instance.UpdateTiles();
-                SpawnManager.Instance.ResetMovementOfHeroes();
+                SpawnManager.Instance.ResetMovementOfUnits();
                 CanvasManager.Instance.ShowActiveTurnPanel();
                 break;
             case GameState.EnemyTurn:
                 Debug.Log("--------------------ENEMY TURN!--------------------");
+                EnemyManager.Instance.PopulateUnitLists();
                 GridManager.Instance.UpdateTiles();
                 EnemyManager.Instance.BeginEnemyTurns();
+                SpawnManager.Instance.ResetMovementOfUnits();
                 CanvasManager.Instance.ShowActiveTurnPanel();
                 break;
-
 
             default:
                 Debug.LogError("Unhandled GameState: " + newState);

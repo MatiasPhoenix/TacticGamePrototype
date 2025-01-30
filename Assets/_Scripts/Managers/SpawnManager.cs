@@ -84,7 +84,7 @@ public class SpawnManager : MonoBehaviour
             else
             {
                 NodeBase playerNodeBase = GridManager.Instance.TileForTeams();
-                Instantiate(_HeroUnits[0], playerNodeBase.Coords.Pos, _HeroUnits[0].transform.rotation);  
+                Instantiate(_HeroUnits[0], playerNodeBase.Coords.Pos, _HeroUnits[0].transform.rotation);
             }
         }
 
@@ -101,12 +101,20 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public void ResetMovementOfHeroes()
+    public void ResetMovementOfUnits()
     {
         List<HeroUnit> allHeroes = FindObjectsByType<HeroUnit>(FindObjectsSortMode.None).ToList();
-        foreach (var hero in allHeroes)
+        List<EnemyUnit> allEnemies = FindObjectsByType<EnemyUnit>(FindObjectsSortMode.None).ToList();
+      
+        if (GameManager.Instance.GameState == GameState.PlayerTurn)
         {
-            hero.RestartMovement();
+            foreach (var unit in allHeroes)
+            unit.RestartMovement();
+        }
+        else if (GameManager.Instance.GameState == GameState.EnemyTurn)
+        {
+           foreach (var unit in allEnemies)
+            unit.RestartMovement();
         }
     }
 

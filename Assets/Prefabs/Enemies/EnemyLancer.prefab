@@ -47,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _unitName: Lancer
-  _maxHealth: 0
-  _maxMovement: 0
-  _maxAttack: 0
+  _maxHealth: 2
+  _maxMovement: 3
+  _maxAttack: 2
 --- !u!1001 &220263655156055287
 PrefabInstance:
   m_ObjectHideFlags: 0

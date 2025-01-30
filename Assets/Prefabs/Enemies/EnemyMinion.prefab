@@ -47,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _unitName: Minion
-  _maxHealth: 0
-  _maxMovement: 0
-  _maxAttack: 0
+  _maxHealth: 1
+  _maxMovement: 4
+  _maxAttack: 1
 --- !u!1001 &6153721096798530397
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -47,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: 2
   _unitName: Mage
-  _maxHealth: 0
-  _maxMovement: 0
-  _maxAttack: 0
+  _maxHealth: 1
+  _maxMovement: 2
+  _maxAttack: 4
 --- !u!1001 &1177412045499953472
 PrefabInstance:
   m_ObjectHideFlags: 0
