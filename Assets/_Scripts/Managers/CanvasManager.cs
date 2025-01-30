@@ -36,7 +36,7 @@ public class CanvasManager : MonoBehaviour
     public void SetActiveHeroPanel() => _heroPanel.gameObject.SetActive(!_heroPanel.gameObject.activeSelf);
 
     public void SetActiveMessagePanel() => _messagePanel.gameObject.SetActive(!_messagePanel.gameObject.activeSelf);
-    
+
     public void SetActiveTurnPanel() => _turnPanel.gameObject.SetActive(!_turnPanel.gameObject.activeSelf);
 
     public void ActionButton(string action) => MouseManager.Instance.ActiveFloodFill(action);
@@ -47,7 +47,7 @@ public class CanvasManager : MonoBehaviour
         _messagePanelText.text = message;
         Invoke("SetActiveMessagePanel", 1.5f);
     }
-    
+
     public void UpgradePanelHeroInfo(HeroUnit currentHero)
     {
         _factionName.text = currentHero.FactionAndName();
@@ -62,6 +62,9 @@ public class CanvasManager : MonoBehaviour
         _gameManagerText.text = GameManager.Instance.GameState.ToString();
         _turnButton.gameObject.SetActive(!_turnButton.gameObject.activeSelf);
         Invoke("SetActiveTurnPanel", 1.2f);
+        
+        if(MouseManager.Instance.GetWorkgingNode() != null)
+            MouseManager.Instance.GetWorkgingNode().UnitDeselectedInNodeBase();
     }
 
 }

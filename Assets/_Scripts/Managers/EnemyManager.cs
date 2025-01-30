@@ -73,7 +73,6 @@ public class EnemyManager : MonoBehaviour
 
     public IEnumerator GoToTarget(EnemyUnit currentEnemy)
     {
-
         AnimationManager.Instance.PlayWalkAnimation(currentEnemy, true);
         unitMoving = true;
 
