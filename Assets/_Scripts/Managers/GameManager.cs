@@ -53,11 +53,13 @@ public class GameManager : MonoBehaviour
                 Debug.Log("--------------------PLAYER TURN!--------------------");
                 GridManager.Instance.UpdateTiles();
                 SpawnManager.Instance.ResetMovementOfHeroes();
+                CanvasManager.Instance.ShowActiveTurnPanel();
                 break;
             case GameState.EnemyTurn:
                 Debug.Log("--------------------ENEMY TURN!--------------------");
                 GridManager.Instance.UpdateTiles();
                 EnemyManager.Instance.BeginEnemyTurns();
+                CanvasManager.Instance.ShowActiveTurnPanel();
                 break;
 
 

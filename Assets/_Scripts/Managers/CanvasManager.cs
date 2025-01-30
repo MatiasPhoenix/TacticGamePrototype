@@ -14,8 +14,10 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _attack;
     [SerializeField] private TextMeshProUGUI _moveRange;
 
-    [Header("MESSAGE PANELS")]
+    [Header("MESSAGE & TURN CONTROL PANELS")]
     [SerializeField] private GameObject _messagePanel;
+    [SerializeField] private GameObject _turnPanel;
+    [SerializeField] private GameObject _turnButton;
     [SerializeField] private TextMeshProUGUI _messagePanelText;
     [SerializeField] private TextMeshProUGUI _gameManagerText;
 
@@ -27,17 +29,15 @@ public class CanvasManager : MonoBehaviour
 
     private void Update()
     {
-        _gameManagerText.text = GameManager.Instance.GameState.ToString();   
-
         if (Input.GetKeyDown(KeyCode.Alpha1)) ActionButton("Movement");
         if (Input.GetKeyDown(KeyCode.Alpha2)) ActionButton("Attack");
         if (Input.GetKeyDown(KeyCode.Escape)) ActionButton("CancelSelection");
-
-        
     }
     public void SetActiveHeroPanel() => _heroPanel.gameObject.SetActive(!_heroPanel.gameObject.activeSelf);
 
     public void SetActiveMessagePanel() => _messagePanel.gameObject.SetActive(!_messagePanel.gameObject.activeSelf);
+    
+    public void SetActiveTurnPanel() => _turnPanel.gameObject.SetActive(!_turnPanel.gameObject.activeSelf);
 
     public void ActionButton(string action) => MouseManager.Instance.ActiveFloodFill(action);
 
@@ -54,6 +54,14 @@ public class CanvasManager : MonoBehaviour
         _healthPoints.text = $"Health: {currentHero.CurrentHealth()}/{currentHero.MaxHealth()}";
         _attack.text = $"Attack range: {currentHero.MaxAttack()}";
         _moveRange.text = $"Movement: {currentHero.CurrentMovement()}/{currentHero.MaxMovement()}";
+    }
+
+    public void ShowActiveTurnPanel()
+    {
+        SetActiveTurnPanel();
+        _gameManagerText.text = GameManager.Instance.GameState.ToString();
+        _turnButton.gameObject.SetActive(!_turnButton.gameObject.activeSelf);
+        Invoke("SetActiveTurnPanel", 1.2f);
     }
 
 }
