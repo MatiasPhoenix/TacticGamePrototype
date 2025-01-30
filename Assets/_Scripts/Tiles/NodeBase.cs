@@ -60,6 +60,17 @@ namespace _Scripts.Tiles
 
             if (MouseManager.Instance.attackPhase == true && TileForFloodFill.activeSelf && OccupateByEnemy)
                 Debug.Log($"Qui c'è un ENEMY, {ThisEnemy.FactionAndName()} -> {Coords.Pos}, walkable -> {Walkable} e mountain -> {MountainOrObstacle}");
+
+            if (ThisEnemy != null && CanvasManager.Instance.EnemyPanelIsActive() == false)
+            {
+                CanvasManager.Instance.SetActiveEnemyPanel();
+                CanvasManager.Instance.UpgradePanelEnemyInfo(ThisEnemy);
+            }
+        }
+        protected virtual void OnMouseExit()
+        {
+            if (ThisEnemy == null && CanvasManager.Instance.EnemyPanelIsActive() == true)
+                CanvasManager.Instance.SetActiveEnemyPanel();
         }
 
         protected void OnMouseDown()

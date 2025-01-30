@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake() => Instance = this;
 
+    private bool _heroesWin = true;
     void Start()
     {
         ChangeState(GameState.GameStart);
@@ -37,29 +38,30 @@ public class GameManager : MonoBehaviour
                 Debug.Log("---Inizia GeneratedGrid!");
                 GridManager.Instance.GeneratedGrid();
                 GridManager.Instance.CreateMapGame();
+                StartCoroutine(CanvasManager.Instance.GameMessageStartOrEnd("Start"));
                 break;
             case GameState.PlayerSpawn:
                 Debug.Log("---Inizia SpawnHeroes!");
                 GridManager.Instance.SpawnUnitsForGame();
-                EnemyManager.Instance.PopulateUnitLists();
+                SpawnManager.Instance.PopulateUnitLists();
                 ChangeState(GameState.EnemySpawn);
                 break;
             case GameState.EnemySpawn:
                 Debug.Log("---Inizia SpawnEnemies!");
                 GridManager.Instance.SpawnUnitsForGame();
-                EnemyManager.Instance.PopulateUnitLists();
+                SpawnManager.Instance.PopulateUnitLists();
                 ChangeState(GameState.PlayerTurn);
                 break;
             case GameState.PlayerTurn:
                 Debug.Log("--------------------PLAYER TURN!--------------------");
-                EnemyManager.Instance.PopulateUnitLists();
+                SpawnManager.Instance.PopulateUnitLists();
                 GridManager.Instance.UpdateTiles();
                 SpawnManager.Instance.ResetMovementOfUnits();
                 CanvasManager.Instance.ShowActiveTurnPanel();
                 break;
             case GameState.EnemyTurn:
                 Debug.Log("--------------------ENEMY TURN!--------------------");
-                EnemyManager.Instance.PopulateUnitLists();
+                SpawnManager.Instance.PopulateUnitLists();
                 GridManager.Instance.UpdateTiles();
                 EnemyManager.Instance.BeginEnemyTurns();
                 SpawnManager.Instance.ResetMovementOfUnits();
@@ -72,6 +74,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool BattleResult() => _heroesWin;
     public void EndTurn() => ChangeState(GameState.EnemyTurn);
 }
 

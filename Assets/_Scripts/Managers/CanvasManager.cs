@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,12 +15,26 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _attack;
     [SerializeField] private TextMeshProUGUI _moveRange;
 
+    [Header("ENEMY INFORMATION")]
+    [SerializeField] private GameObject _enemyPanel;
+    [SerializeField] private TextMeshProUGUI _enemyHealthPoints;
+    [SerializeField] private TextMeshProUGUI _enemyFactionName;
+    [SerializeField] private TextMeshProUGUI _enemyAttack;
+    [SerializeField] private TextMeshProUGUI _enemyMoveRange;
+
     [Header("MESSAGE & TURN CONTROL PANELS")]
     [SerializeField] private GameObject _messagePanel;
     [SerializeField] private GameObject _turnPanel;
     [SerializeField] private GameObject _turnButton;
     [SerializeField] private TextMeshProUGUI _messagePanelText;
     [SerializeField] private TextMeshProUGUI _gameManagerText;
+
+
+    [Header("GAME MANAGER MESSAGE")]
+    [SerializeField] private GameObject _panelStartOrEnd;
+    [SerializeField] private TextMeshProUGUI _startOrEndMessageText;
+    [SerializeField] private TextMeshProUGUI _subtitleStartEndMessageText;
+
 
     [Header("PLAYER BUTTONS")]
     [SerializeField] private Button _moveButton;
@@ -33,7 +48,10 @@ public class CanvasManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) ActionButton("Attack");
         if (Input.GetKeyDown(KeyCode.Escape)) ActionButton("CancelSelection");
     }
+
     public void SetActiveHeroPanel() => _heroPanel.gameObject.SetActive(!_heroPanel.gameObject.activeSelf);
+    public void SetActiveEnemyPanel() => _enemyPanel.gameObject.SetActive(!_enemyPanel.gameObject.activeSelf);
+    public bool EnemyPanelIsActive() => _enemyPanel.gameObject.activeSelf;
 
     public void SetActiveMessagePanel() => _messagePanel.gameObject.SetActive(!_messagePanel.gameObject.activeSelf);
 
@@ -55,6 +73,13 @@ public class CanvasManager : MonoBehaviour
         _attack.text = $"Attack range: {currentHero.MaxAttack()}";
         _moveRange.text = $"Movement: {currentHero.CurrentMovement()}/{currentHero.MaxMovement()}";
     }
+    public void UpgradePanelEnemyInfo(EnemyUnit currentEnemy)
+    {
+        _enemyFactionName.text = currentEnemy.FactionAndName();
+        _enemyHealthPoints.text = $"Health: {currentEnemy.CurrentHealth()}/{currentEnemy.MaxHealth()}";
+        _enemyAttack.text = $"Attack range: {currentEnemy.MaxAttack()}";
+        _enemyMoveRange.text = $"Movement: {currentEnemy.MaxMovement()}";
+    }
 
     public void ShowActiveTurnPanel()
     {
@@ -65,6 +90,36 @@ public class CanvasManager : MonoBehaviour
         
         if(MouseManager.Instance.GetWorkgingNode() != null)
             MouseManager.Instance.GetWorkgingNode().UnitDeselectedInNodeBase();
+    }
+
+    public IEnumerator GameMessageStartOrEnd(string message)
+    {
+        switch (message)
+        {
+            case "Start":
+            _panelStartOrEnd.gameObject.SetActive(true);
+            _startOrEndMessageText.text = "START BATTLE!";
+            yield return new WaitForSeconds(3f);
+            _panelStartOrEnd.gameObject.SetActive(false);
+            ShowActiveTurnPanel();
+            break;
+            
+            case "End":
+            _panelStartOrEnd.gameObject.SetActive(true);
+            _startOrEndMessageText.text = "BATTLE ENDED!";
+
+            if (GameManager.Instance.BattleResult())
+                _subtitleStartEndMessageText.text = "Heroes victory!";
+            if (!GameManager.Instance.BattleResult())
+                _subtitleStartEndMessageText.text = "Evils victory!";
+
+            yield return new WaitForSeconds(1f);
+            Time.timeScale = 0;
+            break;
+
+            default:
+            break;
+        }
     }
 
 }

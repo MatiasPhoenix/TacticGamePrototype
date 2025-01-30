@@ -10,92 +10,49 @@ public class SpawnManager : MonoBehaviour
 
     [Header("HERO Units")]
     [SerializeField] private List<HeroUnit> _heroePrefabs = new List<HeroUnit>(); //LIST of all heroes
-    [SerializeField] private bool _oneHero;
 
     [Header("ENEMY Units")]
     [SerializeField] private List<EnemyUnit> _enemyPrefabs = new List<EnemyUnit>();
 
 
     //LIST of characters in game
-    private List<HeroUnit> _HeroUnits = new List<HeroUnit>(); //Only heores in game
-    private List<EnemyUnit> _EnemyUnits = new List<EnemyUnit>();
+    private List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
+    private List<HeroUnit> _heroUnits = new List<HeroUnit>();
 
 
-    void Awake() => Instance = this;
+    void Awake() => Instance = this; 
 
-    void Start()
+    public void PopulateUnitLists()
     {
-        SetListOfUnits();
+        _enemyUnits = FindObjectsByType<EnemyUnit>(FindObjectsSortMode.None).ToList();
+        _heroUnits = FindObjectsByType<HeroUnit>(FindObjectsSortMode.None).ToList();
     }
 
-    public List<HeroUnit> GetHeroInGameList()
-    {
-        foreach (HeroUnit hero in _heroePrefabs) _HeroUnits.Add(hero);
-        return _HeroUnits;
-    }
+    public List<HeroUnit> GetHeroList() => _heroUnits;
+    public List<EnemyUnit> GetEnemyList() => _enemyUnits;
 
-    public List<EnemyUnit> GetEnemyInGameList()
-    {
-        foreach (EnemyUnit enemy in _enemyPrefabs) _EnemyUnits.Add(enemy);
-        return _EnemyUnits;
-    }
-
-    public int NumberOFHeroes()
-    {
-        return _HeroUnits.Count;
-    }
-
-    public int NumberOfEnemies()
-    {
-        return _EnemyUnits.Count;
-    }
-
-    public bool OnlyOneHeroe()
-    {
-        return _oneHero;
-    }
-
-    public void SetListOfUnits()
-    {
-        foreach (var hero in _heroePrefabs)
-        {
-            _HeroUnits.Add(hero);
-        }
-        foreach (var enemy in _enemyPrefabs)
-        {
-            _EnemyUnits.Add(enemy);
-        }
-    }
 
     public void ChooseTileForSpawnUnits() //Select the tile to spawn the units
     {
         if (GameManager.Instance.GameState == GameState.PlayerSpawn)
         {
-            if (!OnlyOneHeroe())
+            for (int i = 0; i < _heroePrefabs.Count; i++)
             {
-                for (int i = 0; i < _HeroUnits.Count; i++)
-                {
-                    GridManager.Instance.UpdateTiles();
+                GridManager.Instance.UpdateTiles();
 
-                    NodeBase playerNodeBase = GridManager.Instance.TileForTeams();
-                    Instantiate(_HeroUnits[i], playerNodeBase.Coords.Pos, _HeroUnits[i].transform.rotation);
-                }
-            }
-            else
-            {
                 NodeBase playerNodeBase = GridManager.Instance.TileForTeams();
-                Instantiate(_HeroUnits[0], playerNodeBase.Coords.Pos, _HeroUnits[0].transform.rotation);
+                Instantiate(_heroePrefabs[i], playerNodeBase.Coords.Pos, _heroePrefabs[i].transform.rotation);
             }
         }
 
         if (GameManager.Instance.GameState == GameState.EnemySpawn)
         {
-            for (int i = 0; i < _EnemyUnits.Count; i++)
+            for (int i = 0; i < _enemyPrefabs.Count; i++)
             {
                 GridManager.Instance.UpdateTiles();
 
                 NodeBase enemyNodeBase = GridManager.Instance.TileForTeams();
-                Instantiate(_EnemyUnits[i], enemyNodeBase.Coords.Pos, _EnemyUnits[i].transform.rotation);
+                Instantiate(_enemyPrefabs[i], enemyNodeBase.Coords.Pos, _enemyPrefabs[i].transform.rotation);
                 GridManager.Instance.UpdateTiles();
             }
         }
@@ -105,16 +62,16 @@ public class SpawnManager : MonoBehaviour
     {
         List<HeroUnit> allHeroes = FindObjectsByType<HeroUnit>(FindObjectsSortMode.None).ToList();
         List<EnemyUnit> allEnemies = FindObjectsByType<EnemyUnit>(FindObjectsSortMode.None).ToList();
-      
+
         if (GameManager.Instance.GameState == GameState.PlayerTurn)
         {
             foreach (var unit in allHeroes)
-            unit.RestartMovement();
+                unit.RestartMovement();
         }
         else if (GameManager.Instance.GameState == GameState.EnemyTurn)
         {
-           foreach (var unit in allEnemies)
-            unit.RestartMovement();
+            foreach (var unit in allEnemies)
+                unit.RestartMovement();
         }
     }
 

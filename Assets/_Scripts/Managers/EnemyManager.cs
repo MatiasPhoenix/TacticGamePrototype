@@ -13,21 +13,13 @@ public class EnemyManager : MonoBehaviour
 
     private HeroUnit _heroTarget;
     private bool _enemyTurnFinished = false;
-
-    private List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
-    private List<HeroUnit> _heroTargetUnits = new List<HeroUnit>();
-
-    public void PopulateUnitLists()
-    {
-        _enemyUnits = FindObjectsByType<EnemyUnit>(FindObjectsSortMode.None).ToList();
-        _heroTargetUnits = FindObjectsByType<HeroUnit>(FindObjectsSortMode.None).ToList();
-    }
+    
 
     public void BeginEnemyTurns() => StartCoroutine(ProcessEnemyTurns());
 
     private IEnumerator ProcessEnemyTurns()
     {
-        foreach (var enemy in _enemyUnits)
+        foreach (var enemy in SpawnManager.Instance.GetEnemyList())
         {
             yield return new WaitUntil(() => !_enemyTurnFinished);
             Debug.Log($"Turno del nemico: {enemy.FactionAndName()}");
@@ -40,7 +32,7 @@ public class EnemyManager : MonoBehaviour
     public IEnumerator TargetHeroToCombat(EnemyUnit enemy)
     {
         Dictionary<HeroUnit, List<NodeBase>> paths = new Dictionary<HeroUnit, List<NodeBase>>();
-        foreach (HeroUnit hero in _heroTargetUnits)
+        foreach (HeroUnit hero in SpawnManager.Instance.GetHeroList())
         {
             NodeBase enemyLocation = GridManager.Instance.GetTileAtPosition(enemy.transform.position);
             NodeBase heroLocation = GridManager.Instance.GetTileAtPosition(hero.transform.position);
