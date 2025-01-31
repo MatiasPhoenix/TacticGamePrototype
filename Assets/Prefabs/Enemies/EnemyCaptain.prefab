@@ -45,8 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332260d8c3c29b747908a98a1790b640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitName: EnemyCaptain
-  Faction: 2
+  _faction: 2
+  _unitName: The Boss
+  _maxHealth: 6
+  _maxMovement: 3
+  _maxAttack: 2
 --- !u!1001 &4285563963970096415
 PrefabInstance:
   m_ObjectHideFlags: 0

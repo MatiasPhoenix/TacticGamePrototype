@@ -46,17 +46,13 @@ namespace Tarodev_Pathfinding._Scripts.Grid
             GameManager.Instance.ChangeState(GameState.PlayerSpawn);
         }
 
-        public void SpawnUnitsForGame()
-        {
-            SpawnManager.Instance.ChooseTileForSpawnUnits();
-        }
+        public void SpawnUnitsForGame() => SpawnManager.Instance.ChooseTileForSpawnUnits();
 
         public void CreateMapGame()
         {
             var myGridMap = _scriptableGrid as ScriptableSquareGrid;
             myGridMap.ChangeMapDimensions(_gridWidth, _gridHeight);
         }
-
 
         public NodeBase TileForTeams()
         {
@@ -70,10 +66,7 @@ namespace Tarodev_Pathfinding._Scripts.Grid
                 NodeBase nodeForEnemy = Tiles.Where(t => t.Key.x > _gridWidth / 2 && t.Value.Walkable).OrderBy(t => Random.value).First().Value;
                 return nodeForEnemy;
             }
-            else
-            {
-                return null;
-            }
+            else return null;
         }
 
         public NodeBase GetTileAtPosition(Vector2 pos) => Tiles.TryGetValue(pos, out var tile) ? tile : null;
@@ -81,6 +74,7 @@ namespace Tarodev_Pathfinding._Scripts.Grid
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying || !_drawConnections) return;
+
             Gizmos.color = Color.red;
             foreach (var tile in Tiles)
             {
@@ -88,19 +82,12 @@ namespace Tarodev_Pathfinding._Scripts.Grid
                 Gizmos.DrawLine((Vector3)tile.Key + new Vector3(0, 0, -1), (Vector3)tile.Value.Connection.Coords.Pos + new Vector3(0, 0, -1));
             }
         }
-        public void UnitPresentInTile(NodeBase nodeSelected)
-        {
-            _playerNodeBase = nodeSelected;
-        }
-        public void UnitDeselected()
-        {
-            _playerNodeBase = null;
-        }
+        
+        public void UnitPresentInTile(NodeBase nodeSelected) => _playerNodeBase = nodeSelected;
 
-        public bool UnitSelect()
-        {
-            return _playerNodeBase != null;
-        }
+        public void UnitDeselected() => _playerNodeBase = null;
+
+        public bool UnitSelect() => _playerNodeBase != null;
 
         public void UpdateTiles()
         {
@@ -119,7 +106,7 @@ namespace Tarodev_Pathfinding._Scripts.Grid
                     if (tile.Value.OccupateByUnit)
                         tile.Value.Walkable = true;
                 }
-
+                
                 if (!tile.Value.OccupateByUnit && !tile.Value.OccupateByEnemy && !tile.Value.MountainOrObstacle)
                     tile.Value.Walkable = true;
             }

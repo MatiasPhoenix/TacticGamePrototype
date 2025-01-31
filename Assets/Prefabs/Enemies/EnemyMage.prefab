@@ -49,7 +49,7 @@ MonoBehaviour:
   _unitName: Mage
   _maxHealth: 1
   _maxMovement: 2
-  _maxAttack: 4
+  _maxAttack: 3
 --- !u!1001 &1177412045499953472
 PrefabInstance:
   m_ObjectHideFlags: 0

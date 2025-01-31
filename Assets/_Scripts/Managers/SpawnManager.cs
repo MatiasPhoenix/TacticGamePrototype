@@ -38,10 +38,10 @@ public class SpawnManager : MonoBehaviour
         {
             for (int i = 0; i < _heroePrefabs.Count; i++)
             {
-                GridManager.Instance.UpdateTiles();
 
                 NodeBase playerNodeBase = GridManager.Instance.TileForTeams();
                 Instantiate(_heroePrefabs[i], playerNodeBase.Coords.Pos, _heroePrefabs[i].transform.rotation);
+                GridManager.Instance.UpdateTiles();
             }
         }
 
@@ -49,8 +49,6 @@ public class SpawnManager : MonoBehaviour
         {
             for (int i = 0; i < _enemyPrefabs.Count; i++)
             {
-                GridManager.Instance.UpdateTiles();
-
                 NodeBase enemyNodeBase = GridManager.Instance.TileForTeams();
                 Instantiate(_enemyPrefabs[i], enemyNodeBase.Coords.Pos, _enemyPrefabs[i].transform.rotation);
                 GridManager.Instance.UpdateTiles();

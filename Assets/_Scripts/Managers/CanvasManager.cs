@@ -107,10 +107,10 @@ public class CanvasManager : MonoBehaviour
             case "End":
             _panelStartOrEnd.gameObject.SetActive(true);
             _startOrEndMessageText.text = "BATTLE ENDED!";
-
-            if (GameManager.Instance.BattleResult())
+            Debug.Log($"BATTLE ENDED!");
+            if (!GameManager.Instance.BattleVictory())
                 _subtitleStartEndMessageText.text = "Heroes victory!";
-            if (!GameManager.Instance.BattleResult())
+            else
                 _subtitleStartEndMessageText.text = "Evils victory!";
 
             yield return new WaitForSeconds(1f);

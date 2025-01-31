@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private void Awake() => Instance = this;
 
     private bool _heroesWin = true;
+
     void Start()
     {
         ChangeState(GameState.GameStart);
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
                 GridManager.Instance.SpawnUnitsForGame();
                 SpawnManager.Instance.PopulateUnitLists();
                 ChangeState(GameState.EnemySpawn);
+                Debug.Log($"{SpawnManager.Instance.GetHeroList().Count} Spawned!"); 
                 break;
             case GameState.EnemySpawn:
                 Debug.Log("---Inizia SpawnEnemies!");
@@ -58,6 +60,7 @@ public class GameManager : MonoBehaviour
                 GridManager.Instance.UpdateTiles();
                 SpawnManager.Instance.ResetMovementOfUnits();
                 CanvasManager.Instance.ShowActiveTurnPanel();
+                BattleManager.Instance.BattleWinnerCalculator();
                 break;
             case GameState.EnemyTurn:
                 Debug.Log("--------------------ENEMY TURN!--------------------");
@@ -66,6 +69,7 @@ public class GameManager : MonoBehaviour
                 EnemyManager.Instance.BeginEnemyTurns();
                 SpawnManager.Instance.ResetMovementOfUnits();
                 CanvasManager.Instance.ShowActiveTurnPanel();
+                BattleManager.Instance.BattleWinnerCalculator();
                 break;
 
             default:
@@ -74,7 +78,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool BattleResult() => _heroesWin;
+    public bool BattleResult(bool result) => _heroesWin = result;
+    public bool BattleVictory() => _heroesWin;
     public void EndTurn() => ChangeState(GameState.EnemyTurn);
 }
 

@@ -29,7 +29,7 @@ public class AnimationManager : MonoBehaviour
     public void CharacterIsDead(BaseUnit unit)
     {
         Animator anim = FindAnimatorComponent(unit);
-        if (anim != null) anim.SetBool("IsDeath", true);
+        if (anim != null) anim.SetBool("isDeath", true);
     }
 
     Animator FindAnimatorComponent(BaseUnit unit)
